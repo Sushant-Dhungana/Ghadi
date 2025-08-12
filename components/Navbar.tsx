@@ -11,7 +11,7 @@ const Navbar = () => {
           <LuWatch className="text-4xl sm:4xl" />
         </Link>
       </div>
-      <div className="relative max-w-[300px] md:w-[400px] sm:w-[100px]">
+      <div className="relative max-w-[300px] md:w-[400px]">
         <div className="absolute inset-y-0 start-0 flex items-center pl-2">
           <IoIosSearch className=" h-6 w-6" />
         </div>
