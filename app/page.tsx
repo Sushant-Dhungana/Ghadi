@@ -1,9 +1,14 @@
-import Image from "next/image";
+import Hero from "@/components/Hero";
+import ProductList from "@/components/ProductList";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      Home page
+    <div className="bg-[#f8f9fa">
+      <Hero />
+      <h2 className="w-full text-center text-2xl md:text-4xl font-semibold py-6">
+        All Products
+      </h2>
+      <ProductList />
     </div>
   );
 }
