@@ -39,7 +39,7 @@ const Navbar = () => {
           </div>
 
           {/* Button */}
-          <Link href="#">
+          <Link href="/add-product">
             <button className="px-4 py-2 bg-[#212529] text-white rounded-md border-2 border-[#212529] hover:border-[#212529] hover:text-[#212529] hover:bg-white transition duration-300 ease-in-out">
               Add product
             </button>
