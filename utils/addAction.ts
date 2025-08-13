@@ -24,21 +24,19 @@ export async function addAction(formData: FormData) {
     const buffer = Buffer.from(arrayBuffer);
     const imageResponse = await new Promise<{ secure_url: string }>(
       (resolve, reject) => {
-        cloudinary.uploader
-          .upload_stream(
-            {
-              resource_type: "auto",
-              folder: "ghadi",
-            },
-            async (error, result) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(result as { secure_url: string });
-              }
+        cloudinary.uploader.upload_stream(
+          {
+            resource_type: "auto",
+            folder: "ghadi",
+          },
+          async (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result as { secure_url: string });
             }
-          )
-          .end(buffer);
+          }
+        ).end(buffer);
       }
     );
     console.log(imageResponse);
