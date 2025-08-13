@@ -1,70 +1,53 @@
-import { connectDB } from "@/app/api/db/connectDB";
-import Product from "@/app/api/models/product.model";
+import { NextRequest, NextResponse } from "next/server";
 import cloudinary from "@/utils/cloudinary";
+import { connectDB } from "../../db/connectDB";
+import Product from "../../models/product.model";
 
-export async function GET(
-  request: Request,
-  { params }: { params: any }
-) {
+interface RouteParams {
+  params: { productId: string };
+}
+
+export async function GET(request: NextRequest, { params }: RouteParams) {
   await connectDB();
   const { productId } = params;
 
   try {
     const product = await Product.findById(productId);
     if (!product) {
-      return Response.json({ error: "Product not found" }, { status: 404 });
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
-    return Response.json({ product }, { status: 200 });
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return Response.json({ message: error.message }, { status: 400 });
-    }
-    return Response.json(
-      { message: "An unexpected error occurred" },
+    return NextResponse.json({ product }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : "Unexpected error" },
       { status: 400 }
     );
   }
 }
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: any } 
-) {
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
   await connectDB();
   const { productId } = params;
 
   try {
-    const product = await Product.findById(productId);
-
+    const product = await Product.findByIdAndDelete(productId);
     if (!product) {
-      return Response.json({ error: "Product not found" }, { status: 404 });
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    // Delete image from Cloudinary if it exists
-    if (product.image) {
-      const parts = product.image.split("/");
-      const fileName = parts[parts.length - 1];
-      const imageId = fileName.split(".")[0];
+    // Delete image from Cloudinary
+    const parts = product.image.split("/");
+    const fileName = parts[parts.length - 1];
+    const imageId = fileName.split(".")[0];
+    await cloudinary.uploader.destroy(`ghadi/${imageId}`);
 
-      await cloudinary.uploader
-        .destroy(`ghadi/${imageId}`)
-        .then((result) => console.log("Cloudinary deletion result:", result))
-        .catch((err) => console.error("Cloudinary deletion error:", err));
-    }
-
-    // Delete product from database
-    await Product.findByIdAndDelete(productId);
-
-    return Response.json(
+    return NextResponse.json(
       { message: "Product deleted successfully" },
       { status: 200 }
     );
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return Response.json({ message: error.message }, { status: 400 });
-    }
-    return Response.json(
-      { message: "An unexpected error occurred" },
+  } catch (error) {
+    return NextResponse.json(
+      { message: error instanceof Error ? error.message : "Unexpected error" },
       { status: 400 }
     );
   }

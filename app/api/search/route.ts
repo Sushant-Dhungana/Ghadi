@@ -1,4 +1,3 @@
-import { connect } from "http2";
 import { NextRequest } from "next/server";
 import { connectDB } from "../db/connectDB";
 import Product from "../models/product.model";
