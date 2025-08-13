@@ -1,12 +1,26 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { LuWatch } from "react-icons/lu";
 import { IoIosSearch } from "react-icons/io";
 import { HiMenu, HiX } from "react-icons/hi";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("searchTerm", e.target.value);
+
+    const searchQuery = urlParams.toString();
+    window.history.replaceState({}, "", `?${searchQuery}`);
+    router.push(`/search?${searchQuery}`);
+    if (e.target.value === "") {
+      router.push("/");
+    }
+  };
 
   return (
     <nav className="bg-white text-black border-b border-gray-200">
@@ -33,6 +47,7 @@ const Navbar = () => {
             </div>
             <input
               type="text"
+              onChange={handleChange}
               placeholder="Search"
               className="bg-gray-200 rounded-[8px] border-2 border-slate-300/[0.7] h-[36px] pl-9 w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
             />
