@@ -24,10 +24,26 @@ const ProductPage = () => {
   const [product, setProduct] = useState<Product>();
 
   const handleDelete = async () => {
-    const response = await axios.delete(`/api/product/${params.productId}`);
+    // Show confirmation dialog
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+    if (!confirmed) return; // User canceled deletion
 
-    toast.success(response.data.message);
-    router.push("/");
+    try {
+      const response = await axios.delete(`/api/product/${params.productId}`);
+
+      toast.success(response.data.message);
+      router.push("/"); // Redirect after successful deletion
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return Response.json({ message: error.message }, { status: 400 });
+      }
+      return Response.json(
+        { message: "An unknown error occurred" },
+        { status: 400 }
+      );
+    }
   };
 
   useEffect(() => {
