@@ -36,7 +36,7 @@ const SearchPage = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4 text-center">Search Results</h1>
-      <div className="mb-4 grid grid-cols-1 md:grid-cols-4 gap-4 w-[90%] mx-auto">
+      <div className="mb-4 grid grid-cols-1 md:grid-cols-4 gap-4 w-[90%] mx-auto justify-items-center">
         {products.map((product: Product, index) => {
           return (
             <div key={index}>
