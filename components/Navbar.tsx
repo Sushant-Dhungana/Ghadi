@@ -72,13 +72,14 @@ const Navbar = () => {
             </div>
             <input
               type="text"
+              onChange={handleChange}
               placeholder="Search"
               className="bg-gray-200 rounded-[8px] border-2 border-slate-300/[0.7] h-[36px] pl-9 w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
             />
           </div>
 
           {/* Button */}
-          <Link href="#">
+          <Link href="/add-product">
             <button className="w-full px-4 py-2 bg-[#212529] text-white rounded-md border-2 border-[#212529] hover:border-[#212529] hover:text-[#212529] hover:bg-white transition duration-300 ease-in-out">
               Add product
             </button>
