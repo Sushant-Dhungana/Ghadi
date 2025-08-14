@@ -3,13 +3,12 @@ import cloudinary from "@/utils/cloudinary";
 import { connectDB } from "../../db/connectDB";
 import Product from "../../models/product.model";
 
-interface RouteParams {
-  params: { productId: string };
-}
-
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ productId: string }> }
+) {
   await connectDB();
-  const { productId } = params;
+  const productId = (await params).productId;
 
   try {
     const product = await Product.findById(productId);
@@ -25,9 +24,12 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ productId: string }> }
+) {
   await connectDB();
-  const { productId } = params;
+  const productId = (await params).productId;
 
   try {
     const product = await Product.findByIdAndDelete(productId);
